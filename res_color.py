@@ -16,8 +16,7 @@ def normalize_scores(scores):
 
 def generate_color_bar(filename="colorbar.png"):
     fig, ax = plt.subplots(figsize=(6, 0.5))
-    
-    # Create gradient from grey to red
+    # Gradient from grey to red
     gradient = np.linspace(0, 1, 256).reshape(1, -1)
     color_map = mcolors.LinearSegmentedColormap.from_list("custom", [(0.5, 0.5, 0.5), (1, 0, 0)])
     
@@ -41,8 +40,8 @@ def color_rbd_from_csv(filename, object_name):
         reader = csv.reader(csvfile)
         next(reader)  # Skip header
         for row in reader:
-            residues.append(int(row[0]))  # Residue number
-            scores.append(float(row[1]))  # Score value
+            residues.append(int(row[0])) 
+            scores.append(float(row[1]))  
 
     # Normalize scores for color mapping
     norm_scores = normalize_scores(scores)
@@ -51,7 +50,7 @@ def color_rbd_from_csv(filename, object_name):
     color_map = mcolors.LinearSegmentedColormap.from_list("custom", [(0.5, 0.5, 0.5), (1, 0, 0)])
     
     for res, norm_score in zip(residues, norm_scores):
-        color = color_map(norm_score)[:3]  # Get RGB values
+        color = color_map(norm_score)[:3]  
         pymol_color = f"[{color[0]},{color[1]},{color[2]}]"
         cmd.set_color(f"color_{res}", color)
         cmd.color(f"color_{res}", f"{object_name} and resi {res}")
@@ -61,12 +60,12 @@ def color_rbd_from_csv(filename, object_name):
 
     filename_only = os.path.basename(filename)  
     filename_only = os.path.splitext(filename_only)[0]  
-    output_path = os.path.join(r'C:/Users/au649453/OneDrive - Aarhus universitet/PhD/Luca/Pymol/Heatmaps', filename_only + '.png')
+    output_path = os.path.join(r'C:\Users\au649453\OneDrive - Aarhus universitet\PhD\2 Projects\Deep mutational scanning of SarsCov2\Pymol\heatmaps_barcode', filename_only + '.png')
 
     # Save the PyMOL image correctly
-    cmd.png(output_path, dpi=600, ray=1, width=2400, height=1800, quiet=0)
+    cmd.png(output_path, dpi=300, ray=1, width=1200, height=900, quiet=0)
 
-#To use single letter amino acid codes we need to define them
+#Defining single-letter aminoacids
 aa_three_to_one = {
     'ALA': 'A', 'CYS': 'C', 'ASP': 'D', 'GLU': 'E', 'PHE': 'F', 'GLY': 'G', 'HIS': 'H', 'ILE': 'I',
     'LYS': 'K', 'LEU': 'L', 'MET': 'M', 'ASN': 'N', 'PRO': 'P', 'GLN': 'Q', 'ARG': 'R', 'SER': 'S',
@@ -103,17 +102,16 @@ cmd.delete('6m0j')
 
 cmd.hide("everything")
 
-#cmd.show("cartoon", "RBD") #For using the cartoon representation
-cmd.show("surface", "RBD") #For using the surface representation
+#cmd.show("cartoon", "RBD")
+cmd.show("surface", "RBD") 
 
 cmd.set_view((\
-    -0.428181797,   -0.571085215,    0.700345576,\
-    -0.894271731,    0.156256512,   -0.419315904,\
-     0.130027771,   -0.805851102,   -0.577620983,\
-     0.000000000,    0.000000000, -209.790100098,\
-    -32.414237976,   26.077138901,   21.105247498,\
-    -7818.309570312, 8237.889648438,  -20.000001907 ))
-
+    -0.966984689,   -0.237655953,    0.091937542,\
+    -0.165207669,    0.310039431,   -0.936253130,\
+     0.194012970,   -0.920531809,   -0.339055121,\
+     0.000000000,    0.000000000, -218.305236816,\
+   -32.414237976,   26.077138901,   21.105247498,\
+   184.219543457,  252.390991211,  -20.000000000 ))
 
 #Change the label settings
 cmd.set("label_color", "yellow")
